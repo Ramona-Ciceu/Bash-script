@@ -1,0 +1,4 @@
+User: ramonaciceu
+Login time: Fri Apr 19 17:27:42 BST 2024
+Commands: _Directory/subdirectory_1 _Directory/subdirectory_2 _Directory/subdirectory_3 _Directory/subdirectory_4
+---------------------------------------

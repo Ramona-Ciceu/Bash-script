@@ -1,0 +1,84 @@
+.SH NAME
+uuid_categDir.sh \- Bash utility script to generate UUIDs and categorising content in child directories.
+
+.SH SYNOPSIS
+.B uuid_categDir.sh
+
+.SH DESCRIPTION
+The \fBcategorise_content_script\fR script analyses the content within specified child directories. It performs the following tasks:
+
+- Navigates to each child directory and counts the number of files of each type.
+- Calculates the total space used by the files in each child directory.
+- Identifies the shortest and longest filenames in each child directory.
+- Logs user login and script commands.
+- Outputs the analysis results for each child directory.
+
+.SH OPTIONS
+\fIdirectory\fR
+Specifies the child directories to be analysed.
+
+.SH FUNCTIONS
+.TP
+.B generate_uuid_v3 \fINAMESPACE NAME\fR
+Generates UUID version 3 using the provided namespace and name. The UUID is generated based on the MD5 hash of the namespace and name.
+.TP
+.B generate_uuid_v5 \fINAMESPACE NAME\fR
+Generates UUID version 5 using the provided namespace and name. The UUID is generated based on the SHA-1 hash of the namespace and name.
+
+.TP
+.B check_collision \fIUUID\fR
+Checks if the provided UUID already exists in the 'uuid.txt' file, if a collision is detected, it notifies the user. And categorising content in child directories.
+
+.TP 
+.B save_to_file \FIUUID\fR
+Saves the provided UUID to the 'uuids.txt' file.
+
+.TP
+.B print_uuid \FIUUID\fR 
+Prints the provided UUID and the current date and time.
+
+
+.SH FILES
+uuids.txt
+Text file to store generated UUIDs and detect collisions. 
+
+.TP
+\fBcategorise_content\fR \fIdirectory\fR
+Analyses the content within the specified directory, including file type counts, total space used, shortest and longest filenames.
+
+.TP
+\fBlog_commands\fR \fIcommands...\fR
+Logs user login and script commands to the \fIscript_log.txt\fR file.
+
+.TP
+\fBmain\fR \fIdirectory\fR
+The main function of the script that orchestrates the categorisation of content in child directories.
+
+
+
+
+
+.SH EXAMPLES
+Generate and print UUID version 3:
+.B uuid_script
+.PP
+Generate and print UUID version 5:
+.B uuid_script
+
+To categorise the content of child directories:
+.nf
+.PP
+.B categorise_content_script _Directory/subdirectory_1 _Directory/subdirectory_2 _Directory/subdirectory_3 _Directory/subdirectory_4
+.fi
+
+.SH SEE ALSO
+md5sum(1), sha1sum(1), awk(1), grep(1),find(1), whoami(1), date(1)
+
+.SH AUTHOR
+Ramona Ciceu <rc782@canterbury.ac.uk>
+
+.SH BUGS
+Report bugs to rc782@canterbury.ac.uk
+
+.SH COPYRIGHT
+Copyright (C) 2024 Ramona Ciceu.
