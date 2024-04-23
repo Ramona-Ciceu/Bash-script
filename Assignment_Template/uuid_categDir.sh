@@ -1,6 +1,6 @@
-#!/bin/bash
+#! /usr/bin/env bash
 
-# Get the PID of the script
+# Getting the PID of the script
 SCRIPT_PID=$$
 
 #Function to generate UUID version 3
@@ -25,6 +25,7 @@ generate_uuid_v5(){
 #Function to check if UUID exists and detect collisions
 check_collision(){
    local UUID="$1"
+   
    if [ -e "uuids.txt" ] && [ -f "uuids.txt" ]; then
       if grep -Fxq "$UUID" uuids.txt; then
         echo "Collision detected: $UUID"
@@ -44,56 +45,75 @@ save_to_file(){
 print_uuid(){
   local UUID="$1"
   echo "UUID: $UUID"
-  echo "Last generated: $(date)"
+  echo "Last generated: $(date +"%Y-%m-%dT%H:%M:%S:%NZ")"
 }
 
+# Parsing command line options
+while getopts ":l:" opt; do
+    case ${opt} in
+    l)  # Specify log file
+        log_file="${OPTARG}"
+        if [ ! -f "$log_file" ]; then
+            echo "Log file does not exist. Creating a new one..."
+            touch "$log_file" || { echo "Error creating log file." >&2; exit 1; }
+        fi
+        ;;
+    \?)
+        echo "Invalid option: ${OPTARG}" >&2
+        exit 1
+        ;;
+    :)
+        echo "Invalid option: ${OPTARG} requires an argument" >&2
+        exit 1
+        ;;
+    esac
+done
+shift $((OPTIND -1))
 
-#Generate UUID verson 3 using Namespace and MD5 hash
+#Generating UUID version 3
 NAMESPACE="namespace"
 UUID3=$(generate_uuid_v3 "$NAMESPACE" "name3")
 
-#Generate UUID version 5 Namespace and Sha-1 hash
-
+#Generating UUID version 5
 UUID5=$(generate_uuid_v5 "$NAMESPACE" "name3")
 
 
-#Check for collision and save to file for UUID3
+#Checking for collision and save to file for UUID3 and UUID5
 check_collision "$UUID3"
 save_to_file "$UUID3"
 print_uuid "$UUID3"
 
-#Check for collision and save to file for UUID5
 check_collision "$UUID5"
 save_to_file "$UUID5"
 print_uuid "$UUID5"
 
-# Function to categorize content in each child directory
+# Function to categorise content in each child directory
 categorise_content() {
-    local directory="$1"
+    local directory="$1" 
 
-    # Navigate to the directory
+    # Navigating to the directory
     cd "$directory" || { echo "Error: Unable to access directory $directory"; exit 1; }
 
-    # Initialize variables
+    # Initialising variables
     declare -A file_counts
     declare -A file_sizes
     shortest_filename=""
     longest_filename=""
     total_space_used=0
 
-    # Loop through files in the directory
+    # Loop through files in the _Directory
     while IFS= read -r file; do
-        # Check if the file exists and is a regular file
+        # Checking if the file exists
         if [ -f "$file" ]; then
             # Count file types
             file_type="${file##*.}"
             (( file_counts["$file_type"]++ ))
 
-            # Calculate file sizes
+            # Calculating file sizes
             file_size=$(stat -c %s "$file")
             (( file_sizes["$file_type"] += file_size ))
 
-            # Update shortest and longest filenames
+            # Updating shortest and longest filenames
             if [[ -z $shortest_filename ]] || (( ${#file} < ${#shortest_filename} )); then
                 shortest_filename="$file"
             fi
@@ -101,12 +121,13 @@ categorise_content() {
                 longest_filename="$file"
             fi
 
-            # Update total space used
+            # Updating total space used
             (( total_space_used += file_size ))
         fi
     done < <(find . -type f)
 
-    # Output results
+    # Outputing the results for
+    #arranged directories.
     echo "Directory: $directory"
     echo "File type counts:"
     for type in "${!file_counts[@]}"; do
@@ -116,7 +137,12 @@ categorise_content() {
     echo "Shortest filename: $shortest_filename"
     echo "Longest filename: $longest_filename"
 
-    # Return to the original directory
+  if [ "$ls_option" = "true" ]; then
+        echo "Files in directory:"
+        ls -l
+    fi
+
+    # Returning to the original directory
     cd - > /dev/null || exit
 }
 
@@ -124,30 +150,31 @@ categorise_content() {
 log_commands() {
     local log_file="script_log.txt"
     echo "User: $(whoami)" >> "$log_file"
-    echo "Login time: $(date)" >> "$log_file"
+    echo "Login time: $(date + %Y-%m-%dT%H:%M:%S:%NZ)" >> "$log_file"
     echo "Commands: $*" >> "$log_file"
     echo "---------------------------------------" >> "$log_file"
 }
 
-# Main function
+# Main function that logs the login along with script commands
+# and detecting/analysing the directories. 
 main() {
-    # Log user login and script commands
     log_commands "$@"
 
-    # Check if there are arguments provided
+    # Checking for arguments
     if [ "$#" -eq 0 ]; then
         echo "Usage: $0 <directory>"
         exit 1
     fi
 
-    # Detect and analyze child directories
+    
     for directory in "$@"; do
         categorise_content "$directory"
     done
 }
 
-# Call the main function
-main "_Directory/subdirectory_1" "_Directory/subdirectory_2" "_Directory/subdirectory_3" "_Directory/subdirectory_4"
-# Get the PID of the script
+# Calling the main function
+main "_Directory/subdirectory_1" "_Directory/subdirectory_2" "_Directory/subdirectory_3" "_Directory/subdirectory_4" 
+
+# Getting the PID of the script
 echo "PID of the script: $SCRIPT_PID"
 
