@@ -137,8 +137,12 @@ categorise_content() {
     echo "Shortest filename: $shortest_filename"
     echo "Longest filename: $longest_filename"
 
+#Checking if the variable ls_option is set to "true"
   if [ "$ls_option" = "true" ]; then
+     # If ls_option is true, display a message indicating the 
+     #listing files in the directory.
         echo "Files in directory:"
+        # List the files in long format
         ls -l
     fi
 

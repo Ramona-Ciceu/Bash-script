@@ -16,6 +16,8 @@ The \fBcategorise_content_script\fR script analyses the content within specified
 .SH OPTIONS
 \fIdirectory\fR
 Specifies the child directories to be analysed.
+\f ls -l\fR
+List files in the directory.
 
 .SH FUNCTIONS
 .TP
@@ -66,10 +68,13 @@ Generate and print UUID version 5:
 .B uuid_script
 
 To categorise the content of child directories:
-.nf
 .PP
+.nf
+.RS
 .B categorise_content_script _Directory/subdirectory_1 _Directory/subdirectory_2 _Directory/subdirectory_3 _Directory/subdirectory_4
+.RE
 .fi
+.PP
 
 .SH SEE ALSO
 md5sum(1), sha1sum(1), awk(1), grep(1),find(1), whoami(1), date(1)
