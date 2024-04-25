@@ -45,7 +45,7 @@ save_to_file(){
 print_uuid(){
   local UUID="$1"
   echo "UUID: $UUID"
-  echo "Last generated: $(date +"%Y-%m-%dT%H:%M:%S:%NZ")"
+  echo "Last generated: $(date)"
 }
 
 # Parsing command line options
@@ -154,7 +154,7 @@ categorise_content() {
 log_commands() {
     local log_file="script_log.txt"
     echo "User: $(whoami)" >> "$log_file"
-    echo "Login time: $(date + %Y-%m-%dT%H:%M:%S:%NZ)" >> "$log_file"
+    echo "Login time: $(date)" >> "$log_file"
     echo "Commands: $*" >> "$log_file"
     echo "---------------------------------------" >> "$log_file"
 }
