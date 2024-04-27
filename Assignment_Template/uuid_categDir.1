@@ -1,91 +1,70 @@
+
+
 .SH NAME
-uuid_categDir.sh \- Bash utility script to generate UUIDs and categorising content in child directories.
+uuid_categDir \- generate UUIDs and categorise content in each directory.
 
 .SH SYNOPSIS
-.B uuid_categDir.sh
+.B uuid_categDir
+[\fB-h\fR]
+[\fB\-l\fR]
+[\fB--log|_file\fR \fIlog_file\fR]
+[\fIdirectory ...\fR]
 
 .SH DESCRIPTION
-The \fBcategorise_content_script\fR script analyses the content within specified child directories. It performs the following tasks:
-
-- Navigates to each child directory and counts the number of files of each type.
-- Calculates the total space used by the files in each child directory.
-- Identifies the shortest and longest filenames in each child directory.
-- Logs user login and script commands.
-- Outputs the analysis results for each child directory.
+.B uuid_categDir
+is a script that generates UUIDs and  categorises the content in specified directory.
+By default, it displays file type counts, total space used, shortest and longest filenames and the PID of the script.
 
 .SH OPTIONS
-\fIdirectory\fR
-Specifies the child directories to be analysed.
-\f ls -l\fR
-List files in the directory.
-\f -l\fR
-Reading all the different "profile" scripts. 
-
-.SH FUNCTIONS
 .TP
-.B generate_uuid_v3 \fINAMESPACE NAME\fR
-Generates UUID version 3 using the provided namespace and name. The UUID is generated based on the MD5 hash of the namespace and name.
+.B \-h
+Display help message and exit.
 .TP
-.B generate_uuid_v5 \fINAMESPACE NAME\fR
-Generates UUID version 5 using the provided namespace and name. The UUID is generated based on the SHA-1 hash of the namespace and name.
-
+.B \-c
+Display help message and exit.
 .TP
-.B check_collision \fIUUID\fR
-Checks if the provided UUID already exists in the 'uuid.txt' file, if a collision is detected, it notifies the user. And categorising content in child directories.
+.B \-3
+UUID version 3
+.TP
+.B \-5
+UUID version 5
 
-.TP 
-.B save_to_file \FIUUID\fR
-Saves the provided UUID to the 'uuids.txt' file.
+
 
 .TP
-.B print_uuid \FIUUID\fR 
-Prints the provided UUID and the current date and time.
-
-
-.SH FILES
-uuids.txt
-Text file to store generated UUIDs and detect collisions. 
+.B \-l, \-\-log_file \fIlog_file\fR
+Specify a logfile to log user login and script commands.
 
 .TP
-\fBcategorise_content\fR \fIdirectory\fR
-Analyses the content within the specified directory, including file type counts, total space used, shortest and longest filenames.
-
-.TP
-\fBlog_commands\fR \fIcommands...\fR
-Logs user login and script commands to the \fIscript_log.txt\fR file.
-
-.TP
-\fBmain\fR \fIdirectory\fR
-The main function of the script that orchestrates the categorisation of content in child directories.
-
-
-
-
+\fIdirectory ...\fR
+Specifies the directories to be analysed.
 
 .SH EXAMPLES
-Generate and print UUID version 3:
-.B uuid_script
-.PP
-Generate and print UUID version 5:
-.B uuid_script
+To analyse the content of directory and generate UUIDs:
+.BR uuid_categDir “categorise_content”
 
-To categorise the content of child directories:
-.PP
-.nf
-.RS
-.B categorise_content_script _Directory/subdirectory_1 _Directory/subdirectory_2 _Directory/subdirectory_3 _Directory/subdirectory_4
-.RE
-.fi
-.PP
 
-.SH SEE ALSO
-md5sum(1), sha1sum(1), awk(1), grep(1),find(1), whoami(1), date(1)
+To specify a log_file named "script_log" for logging:
+.BR uuid_categDir " -l script_log ”
 
 .SH AUTHOR
-Ramona Ciceu <rc782@canterbury.ac.uk>
+Written by Ramona Ciceu.
 
-.SH BUGS
-Report bugs to rc782@canterbury.ac.uk
+.SH REPORTING BUGS
+Report bugs to: ramona@example.com
 
 .SH COPYRIGHT
-Copyright (C) 2024 Ramona Ciceu.
+Copyright \(co 2024 Ramona Ciceu.
+
+.SH SEE ALSO
+.BR stat (1),
+.BR find (1),
+.BR awk (1),
+.BR grep (1),
+.BR ls (1),
+.BR md5sum (1),
+.BR sha1sum (1),
+.BR numfmt (1)
+
+.SH NOTES
+This script requires the following commands/tools to be available: stat, find, awk, grep, ls, md5sum, sha1sum, and numfmt.
