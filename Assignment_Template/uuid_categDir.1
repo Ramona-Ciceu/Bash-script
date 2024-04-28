@@ -1,70 +1,53 @@
-
+.TH UUID_CATEGDIR
 
 .SH NAME
 uuid_categDir \- generate UUIDs and categorise content in each directory.
 
 .SH SYNOPSIS
 .B uuid_categDir
-[\fB-h\fR]
-[\fB\-l\fR]
-[\fB--log|_file\fR \fIlog_file\fR]
-[\fIdirectory ...\fR]
+.TP
+[\-3] [\-\-generate-uuid-v3]
+.TP
+[\-5] [\-\-generate-uuid-v5]
+.TP
+[\-l \fIlogfile\fR] [\-\-logfile=\fIlogfile\fR]
+.TP
+[\-p] [\-\-print]
 
 .SH DESCRIPTION
-.B uuid_categDir
-is a script that generates UUIDs and  categorises the content in specified directory.
-By default, it displays file type counts, total space used, shortest and longest filenames and the PID of the script.
+ \fBuuid_categDir\fR script performs various operations including generating UUIDs, categorising content in directories and logging user logins and commands.
+It performs the following tasks:
+
+- Generates UUIDs
+- Navigates to each child directory and counts the number of files of each type.
+- Calculates the total space used by the files in each child directory.
+- Identifies the shortest and longest filenames in each child directory.
+- Logs user login and script commands.
+- Outputs the analysis results for each child directory.
+
+
 
 .SH OPTIONS
 .TP
-.B \-h
-Display help message and exit.
-.TP
-.B \-c
-Display help message and exit.
-.TP
-.B \-3
-UUID version 3
-.TP
-.B \-5
-UUID version 5
-
-
+.B \-3, \-\-generate-uuid-v3
+Generate UUID version 3.
 
 .TP
-.B \-l, \-\-log_file \fIlog_file\fR
-Specify a logfile to log user login and script commands.
+.B \-5, \-\-generate-uuid-v5
+Generate UUID version 5.
 
 .TP
-\fIdirectory ...\fR
-Specifies the directories to be analysed.
+.B \-l \fIlogfile\fR, \-\-logfile=\fIlogfile\fR
+Specify the log file to save the output.
 
-.SH EXAMPLES
-To analyse the content of directory and generate UUIDs:
-.BR uuid_categDir “categorise_content”
+.TP
+.B \-p, \-\-print
+Print the output without saving to a log file.
 
-
-To specify a log_file named "script_log" for logging:
-.BR uuid_categDir " -l script_log ”
 
 .SH AUTHOR
 Written by Ramona Ciceu.
 
+
 .SH REPORTING BUGS
-Report bugs to: ramona@example.com
-
-.SH COPYRIGHT
-Copyright \(co 2024 Ramona Ciceu.
-
-.SH SEE ALSO
-.BR stat (1),
-.BR find (1),
-.BR awk (1),
-.BR grep (1),
-.BR ls (1),
-.BR md5sum (1),
-.BR sha1sum (1),
-.BR numfmt (1)
-
-.SH NOTES
-This script requires the following commands/tools to be available: stat, find, awk, grep, ls, md5sum, sha1sum, and numfmt.
+Report bugs to: ramona@canterbury.ac.uk
