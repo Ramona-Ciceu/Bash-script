@@ -149,21 +149,6 @@ categorise_content() {
 
 	echo "Longest filename: $longest_filename"
 
-	#Checking if the variable ls_option is set to "true"
-
-	if [ "$ls_option" = "true" ]; then
-
-	# If ls_option is true, display a message indicating the
-
-	#listing files in the directory.
-
-	echo "Files in directory:"
-
-	# List the files in long format
-
-	ls -l
-
-	fi
 	
 	if [ -d "$file" ]; then 
 		((subdirectory++))
@@ -178,6 +163,15 @@ categorise_content() {
 
 	cd - > /dev/null || exit
 
+}
+
+# Function to log user login and script commands
+log_commands() {
+    local log_file="script_log.txt"
+    echo "User: $(whoami)" >> "$log_file"
+    echo "Login time: $(date)" >> "$log_file"
+    echo "Commands: $*" >> "$log_file"
+    echo "---------------------------------------" >> "$log_file"
 }
 
 # Main function that logs the login along with script commands
@@ -228,21 +222,29 @@ while getopts ":35l:p:" opt; do
 
 		generate_uuid_v3
 
-		#log_commands +='-3'
-
 		;;
 
 		5) # Flag to create a uuidv5
 
 		generate_uuid_v5
-
-		#log_commands +='-5'
 		;; 
-		p) #actally the print flag 
+  
+		p) # Printing flag 
 		run
 		;;
-	
+  
+		l) # Flag to specify the logfile
+		logfile="$OPTARG"
+		;;
 	 esac
  done
-# take the logfile from user then save to that one (simple redirect) 
-#change the c to the print to screen/ vebrose 
+
+ # If logfile is not specified, default to "logfile.txt"
+if [ -z "$logfile" ]; then
+    logfile="logfile.txt"
+fi
+
+# Redirecting the output to the log file
+run > "$logfile" 2> /dev/null
+
+
