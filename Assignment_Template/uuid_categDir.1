@@ -5,14 +5,10 @@ uuid_categDir \- generate UUIDs and categorise content in each directory.
 
 .SH SYNOPSIS
 .B uuid_categDir
-.TP
-[\-3] [\-\-generate-uuid-v3]
-.TP
-[\-5] [\-\-generate-uuid-v5]
-.TP
-[\-l \fIlogfile\fR] [\-\-logfile=\fIlogfile\fR]
-.TP
-[\-p] [\-\-print]
+[\fB\-n\fR \ OPTIONS\fR] [\fB\-DIRECTORY\fR]
+[\fIdirectory ...\fR]
+[\fB\-l \fIlogfile\fR] [\fI\-\-logfile=\fIlogfile\fR]
+[\fB\-p\fR] [\fI\-\-print\fR]
 
 .SH DESCRIPTION
  \fBuuid_categDir\fR script performs various operations including generating UUIDs, categorising content in directories and logging user logins and commands.
@@ -44,6 +40,9 @@ Specify the log file to save the output.
 .B \-p, \-\-print
 Print the output without saving to a log file.
 
+.TP
+.B \-d, \-\-\directory 
+Specify the directory where the script operates.
 
 .SH AUTHOR
 Written by Ramona Ciceu.
