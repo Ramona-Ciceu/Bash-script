@@ -4,6 +4,9 @@
 
 SCRIPT_PID=$$
 
+# Verbose flag
+VERBOSE=false
+
 #Function to check if UUID exists and detect collisions
 
 check_collision(){
@@ -98,7 +101,6 @@ generate_uuid_v5(){
 }
 
 # Function to categorise content in each child directory
-
 categorise_content() {
  
      # Storing the directory passed as an argument
@@ -231,79 +233,51 @@ log_commands() {
     echo "---------------------------------------" >> "$log_file"
 }
 
-# Main function that logs the login along with script commands
-
-# and detecting/analysing the directories.
+# Main function
 
 main() {
+    local logfile="logfile.txt"
+    local print_to_screen=0
 
-# Log the user login and script commands
+    while getopts ":35d:l:p" opt; do 
+        case ${opt} in 
+            3) # Flag to create a uuidv3
+               generate_uuid_v3
+               ;;
+            5) # Flag to create a uuidv5
+               generate_uuid_v5
+               ;;
+           # # Assigns argument value to 'directory'
+            d) directory="$OPTARG"
+               ;;
+            # Flag to specify the logfile
+            l) logfile="$OPTARG"
+              ;;
+            # Flag to print to screen
+            p) print_to_screen=1
+              ;;
 
-  log_commands "$@"
+        esac 
+    done 
+    shift $((OPTIND -1))
 
-# Checking for arguments
-
-  if [ "$#" -eq 0 ]; then
-
-  echo "Usage: $0 <directory>"
-
-  exit 1
-
-  fi
-
-# Iterate over each directory argument
-
-  for directory in "$@"; do
-     # Call categorise_content function for each directory
-      categorise_content "$directory"
-
-  done
-
-}
-
-# Calling the main function
-run(){
-main "_Directory/subdirectory_1" "_Directory/subdirectory_2" "_Directory/subdirectory_3" "_Directory/subdirectory_4" "_Directory/subdirectory_5" 2> /dev/null 
-}
-
- # function to save the output of 'run' function to a log file
-save_to_logFile(){
-	run > $logfile
+    log_commands "$@"
+ # Check if directory option is provided
+    if [ -z "$directory" ]; then
+        echo "Usage: $0 -d <directory> [-l <logfile>] [-p]" >&2
+        exit 1
+    fi
+    
+     if [ ! -f $logfile ] ; then
+     
+    	touch $logfile 
+    fi 
+    categorise_content "$directory"
+    
 }
 
 # Getting the PID of the script
 echo "PID of the script: $SCRIPT_PID"	
 
-
-# Parsing command line options
-
-while getopts ":35l:p:" opt; do
-	case ${opt} in
-		3) # Flag to create a uuidv3
-		generate_uuid_v3
-		;;
-
-		5) # Flag to create a uuidv5
-		generate_uuid_v5
-		;; 
-  
-		p) # Printing flag 
-		run
-		;;
-  
-		l) # Flag to specify the logfile
-		logfile="$OPTARG"
-		;;
-	 esac
- done
-
- # If logfile is not specified, default to "logfile.txt"
-
-if [ -z "$logfile" ]; then
-    logfile="logfile.txt"
-fi
-
-# Redirecting the output to the log file
-run > "$logfile" 2> /dev/null
-
-
+# Execute the main function
+main "$@"
